@@ -1,9 +1,9 @@
 const express = require("express");
 const { createCourse, getCourses, deleteCourse, searchCourses } = require("../controllers/courseController");
 // GET /api/courses/search
-router.get("/search", searchCourses);
-
 const router = express.Router();
+
+router.get("/search", searchCourses);
 
 // POST /api/courses
 router.post("/", createCourse);
