@@ -41,4 +41,26 @@ const deleteCourse = async (req, res) => {
   }
 };
 
-module.exports = { createCourse, getCourses, deleteCourse };
+
+// GET /api/courses/search?query=...
+const searchCourses = async (req, res) => {
+  try {
+    const { query } = req.query;
+    if (!query || query.trim() === "") {
+      return res.status(400).json({ message: "Query parameter is required" });
+    }
+    const regex = new RegExp(query, "i");
+    const courses = await Course.find({
+      $or: [
+        { courseName: regex },
+        { courseDescription: regex },
+        { instructor: regex },
+      ],
+    });
+    res.status(200).json(courses);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+module.exports = { createCourse, getCourses, deleteCourse, searchCourses };

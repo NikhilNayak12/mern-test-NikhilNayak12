@@ -1,5 +1,7 @@
 const express = require("express");
-const { createCourse, getCourses, deleteCourse } = require("../controllers/courseController");
+const { createCourse, getCourses, deleteCourse, searchCourses } = require("../controllers/courseController");
+// GET /api/courses/search
+router.get("/search", searchCourses);
 
 const router = express.Router();
 
