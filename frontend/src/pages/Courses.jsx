@@ -1,5 +1,7 @@
+
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+
 
 function Courses() {
   const [courses, setCourses] = useState([])
@@ -8,6 +10,8 @@ function Courses() {
   const [instructor, setInstructor] = useState('')
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
+  const [search, setSearch] = useState('')
+  const [searching, setSearching] = useState(false)
 
   const token = localStorage.getItem('token')
 
@@ -56,8 +60,52 @@ function Courses() {
     }
   }
 
+  const handleSearch = async (e) => {
+    e.preventDefault()
+    setSearching(true)
+    setError('')
+    try {
+      if (!search.trim()) {
+        fetchCourses()
+        setSearching(false)
+        return
+      }
+      const res = await axios.get(`/api/courses/search?query=${encodeURIComponent(search)}`)
+      setCourses(res.data)
+    } catch (err) {
+      setError('Search failed')
+    }
+    setSearching(false)
+  }
+
   return (
     <div className="max-w-4xl mx-auto px-6 py-10">
+      {/* Search Bar */}
+      <form onSubmit={handleSearch} className="flex items-center gap-3 mb-8">
+        <input
+          type="text"
+          placeholder="Search courses..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          className="flex-1 px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+        />
+        <button
+          type="submit"
+          className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg transition cursor-pointer"
+          disabled={searching}
+        >
+          {searching ? 'Searching...' : 'Search'}
+        </button>
+        {search && (
+          <button
+            type="button"
+            className="px-4 py-3 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-lg transition cursor-pointer"
+            onClick={() => { setSearch(''); fetchCourses(); }}
+          >
+            Clear
+          </button>
+        )}
+      </form>
       {token && (
         <div className="bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl p-8 mb-10">
           <h2 className="text-2xl font-bold text-indigo-400 mb-5">Add New Course</h2>
