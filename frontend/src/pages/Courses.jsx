@@ -57,19 +57,28 @@ function Courses() {
   }
 
   return (
-    <div className="container">
+    <div className="max-w-4xl mx-auto px-6 py-10">
       {token && (
-        <div className="add-course-form">
-          <h2>Add New Course</h2>
-          {message && <div className="message success">{message}</div>}
-          {error && <div className="message error">{error}</div>}
-          <form onSubmit={handleAddCourse}>
+        <div className="bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl p-8 mb-10">
+          <h2 className="text-2xl font-bold text-indigo-400 mb-5">Add New Course</h2>
+          {message && (
+            <div className="bg-emerald-900/40 border border-emerald-700 text-emerald-300 text-center rounded-lg p-3 mb-4">
+              {message}
+            </div>
+          )}
+          {error && (
+            <div className="bg-red-900/40 border border-red-700 text-red-300 text-center rounded-lg p-3 mb-4">
+              {error}
+            </div>
+          )}
+          <form onSubmit={handleAddCourse} className="space-y-4">
             <input
               type="text"
               placeholder="Course Name"
               value={courseName}
               onChange={(e) => setCourseName(e.target.value)}
               required
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
             />
             <textarea
               placeholder="Course Description"
@@ -77,6 +86,7 @@ function Courses() {
               onChange={(e) => setCourseDescription(e.target.value)}
               required
               rows={3}
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition resize-none"
             />
             <input
               type="text"
@@ -84,26 +94,46 @@ function Courses() {
               value={instructor}
               onChange={(e) => setInstructor(e.target.value)}
               required
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
             />
-            <button type="submit">Add Course</button>
+            <button
+              type="submit"
+              className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg transition cursor-pointer"
+            >
+              Add Course
+            </button>
           </form>
         </div>
       )}
 
-      <h2>All Courses</h2>
-      {courses.length === 0 && <p>No courses found.</p>}
-      {courses.map((course) => (
-        <div className="course-card" key={course._id}>
-          <div>
-            <h3>{course.courseName}</h3>
-            <p>{course.courseDescription}</p>
-            <p><strong>Instructor:</strong> {course.instructor}</p>
+      <h2 className="text-2xl font-bold text-gray-100 mb-6">All Courses</h2>
+      {courses.length === 0 && (
+        <p className="text-gray-500 text-center py-10">No courses found.</p>
+      )}
+      <div className="space-y-4">
+        {courses.map((course) => (
+          <div
+            key={course._id}
+            className="bg-gray-900 border border-gray-800 rounded-xl p-6 flex justify-between items-center shadow-lg hover:border-gray-700 transition"
+          >
+            <div>
+              <h3 className="text-lg font-semibold text-gray-100">{course.courseName}</h3>
+              <p className="text-gray-400 mt-1">{course.courseDescription}</p>
+              <p className="text-sm text-indigo-400 mt-2">
+                <span className="text-gray-500">Instructor:</span> {course.instructor}
+              </p>
+            </div>
+            {token && (
+              <button
+                onClick={() => handleDelete(course._id)}
+                className="ml-4 px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg font-medium transition shrink-0 cursor-pointer"
+              >
+                Delete
+              </button>
+            )}
           </div>
-          {token && (
-            <button onClick={() => handleDelete(course._id)}>Delete</button>
-          )}
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   )
 }
