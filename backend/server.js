@@ -8,7 +8,13 @@ const courseRoutes = require("./routes/courseRoute");
 
 const app = express();
 
-app.use(cors());
+// Allow only the deployed frontend domain for CORS
+app.use(cors({
+  origin: [
+    "https://mern-test-nikhilnayak12-private.vercel.app"
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
