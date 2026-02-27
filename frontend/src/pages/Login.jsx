@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+
 import axios from 'axios'
+const API = import.meta.env.VITE_API_URL;
 
 function Login() {
   const [email, setEmail] = useState('')
@@ -13,7 +15,7 @@ function Login() {
     setError('')
 
     try {
-      const res = await axios.post('/api/auth/login', { email, password })
+      const res = await axios.post(`${API}/api/auth/login`, { email, password })
       localStorage.setItem('token', res.data.token)
       navigate('/')
       window.location.reload()

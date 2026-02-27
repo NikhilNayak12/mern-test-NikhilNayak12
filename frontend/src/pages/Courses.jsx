@@ -1,6 +1,8 @@
 
 import { useState, useEffect } from 'react'
+
 import axios from 'axios'
+const API = import.meta.env.VITE_API_URL;
 
 
 function Courses() {
@@ -17,7 +19,7 @@ function Courses() {
 
   const fetchCourses = async () => {
     try {
-      const res = await axios.get('/api/courses')
+      const res = await axios.get(`${API}/api/courses`)
       setCourses(res.data)
     } catch (err) {
       console.error('Error fetching courses:', err)
@@ -35,7 +37,7 @@ function Courses() {
 
     try {
       const res = await axios.post(
-        '/api/courses',
+        `${API}/api/courses`,
         { courseName, courseDescription, instructor },
         { headers: { Authorization: `Bearer ${token}` } }
       )
@@ -51,7 +53,7 @@ function Courses() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/courses/${id}`, {
+      await axios.delete(`${API}/api/courses/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       setCourses(courses.filter((course) => course._id !== id))
@@ -70,7 +72,7 @@ function Courses() {
         setSearching(false)
         return
       }
-      const res = await axios.get(`/api/courses/search?query=${encodeURIComponent(search)}`)
+      const res = await axios.get(`${API}/api/courses/search?query=${encodeURIComponent(search)}`)
       setCourses(res.data)
     } catch (err) {
       setError('Search failed')
