@@ -11,7 +11,7 @@ const app = express();
 // Allow only the deployed frontend domain for CORS
 app.use(cors({
   origin: [
-    "https://mern-test-nikhilnayak12-private.vercel.app"
+    "https://mern-test-nikhilnayak12-private2.vercel.app"
   ],
   credentials: true
 }));
