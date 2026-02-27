@@ -1,0 +1,2 @@
+Frontend Deployment: https://mern-test-nikhilnayak12-private.vercel.app
+Backend Deployment: https://mern-test-nikhilnayak12-3.onrender.com
